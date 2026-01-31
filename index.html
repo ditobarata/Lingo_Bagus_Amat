@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic SPOK Master</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; background: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; width: 450px; }
+        .arabic { font-size: 2.5rem; color: #2c3e50; margin-bottom: 20px; direction: rtl; line-height: 1.8; }
+        .latin { color: #3498db; font-style: italic; margin-bottom: 10px; }
+        .indo { color: #27ae60; font-size: 1.3rem; font-weight: bold; margin-bottom: 20px; }
+        .structure-box { background: #f9f9f9; padding: 10px; border-radius: 8px; font-size: 0.9rem; color: #7f8c8d; margin-bottom: 25px; border-left: 4px solid #3498db; display: none; }
+        .btn-group { display: flex; gap: 10px; }
+        button { flex: 1; padding: 12px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-next { background: #3498db; color: white; }
+        .btn-struct { background: #95a5a6; color: white; }
+        button:hover { opacity: 0.8; transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div id="arabic" class="arabic">...</div>
+    <div id="latin" class="latin"></div>
+    <div id="indo" class="indo"></div>
+    
+    <div id="structure" class="structure-box"></div>
+    
+    <div class="btn-group">
+        <button class="btn-struct" onclick="toggleStructure()">Cek Struktur SPOK</button>
+        <button class="btn-next" onclick="tampilkanAcak()">Kalimat Acak</button>
+    </div>
+</div>
+
+<script src="data.js"></script>
+
+<script>
+    function tampilkanAcak() {
+        const structureBox = document.getElementById('structure');
+        structureBox.style.display = 'none'; // Sembunyikan struktur saat ganti kalimat
+
+        const indexAcak = Math.floor(Math.random() * databaseKalimat.length);
+        const item = databaseKalimat[indexAcak];
+
+        document.getElementById('arabic').innerText = item.ar;
+        document.getElementById('latin').innerText = item.lat;
+        document.getElementById('indo').innerText = item.id;
+        document.getElementById('structure').innerText = item.struktur;
+    }
+
+    function toggleStructure() {
+        const box = document.getElementById('structure');
+        box.style.display = box.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Jalankan saat pertama buka
+    window.onload = tampilkanAcak;
+</script>
+
+</body>
+</html>
