@@ -1,4 +1,4 @@
-const databaseKalimat = [
+window.databaseKalimat = [
     { ar: "يَقْرَأُ الطَّالِبُ الكِتَابَ فِي المَكْتَبَةِ", lat: "Yaqra'u ath-thaalibu al-kitaaba fil maktabati", id: "Siswa itu membaca buku di perpustakaan", struktur: "S: Siswa, P: Membaca, O: Buku, K: Di Perpustakaan" },
     { ar: "تَطْبُخُ الأُمُّ الطَّعَامَ فِي المَطْبَخِ", lat: "Tathbukhu al-ummu ath-tha'aama fil mathbakhi", id: "Ibu memasak makanan di dapur", struktur: "S: Ibu, P: Memasak, O: Makanan, K: Di Dapur" },
     { ar: "يَلْعَبُ الأَوْلَادُ كُرَةَ القَدَمِ فِي المَيْدَانِ", lat: "Yal'abu al-awlaadu kuratal qadami fil maydaani", id: "Anak-anak bermain sepak bola di lapangan", struktur: "S: Anak-anak, P: Bermain, O: Sepak bola, K: Di lapangan" },
