@@ -1,50 +1,89 @@
-body { font-family: 'Arial', sans-serif; background: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-.card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; width: 450px; position: relative; }
-.arabic { font-size: 2.5rem; color: #2c3e50; margin-bottom: 20px; direction: rtl; line-height: 1.8; cursor: pointer; }
-.latin { color: #3498db; font-style: italic; margin-bottom: 10px; cursor: pointer; }
-.indo { color: #27ae60; font-size: 1.3rem; font-weight: bold; margin-bottom: 20px; cursor: pointer; }
-.blur {
-    filter: blur(4px);
-    transition: filter 0.3s ease;
+/* 1. Cegah kedipan Alpine (x-cloak) */
+[x-cloak] { 
+    display: none !important; 
 }
-.structure-box { background: #f9f9f9; padding: 10px; border-radius: 8px; font-size: 0.9rem; color: #7f8c8d; margin-bottom: 25px; border-left: 4px solid #3498db; display: none; }
+
+body { 
+    font-family: 'Arial', sans-serif; 
+    background: #f4f7f6; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; /* Gunakan min-height agar tidak terpotong di HP */
+    margin: 0; 
+}
+
+.card { 
+    background: white; 
+    padding: 30px; 
+    border-radius: 20px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+    text-align: center; 
+    width: 90%; /* Responsif */
+    max-width: 450px; 
+    position: relative; 
+}
+
+.arabic { 
+    font-size: 2.5rem; 
+    color: #2c3e50; 
+    margin-bottom: 20px; 
+    direction: rtl; 
+    line-height: 1.8; 
+    transition: filter 0.3s ease;
+    cursor: pointer;
+}
+
+.latin {
+    color: #3498db;
+    font-style: italic;
+    margin-bottom: 10px;
+    transition: filter 0.3s ease;
+    cursor: pointer;
+}
+
+.indo {
+    color: #27ae60;
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    transition: filter 0.3s ease;
+    cursor: pointer;
+}
+
+.blur {
+    filter: blur(8px);
+    transition: filter 0.3s ease;
+    user-select: none;
+}
+
+.structure-box { 
+    background: #f9f9f9; 
+    padding: 10px; 
+    border-radius: 8px; 
+    font-size: 0.9rem; 
+    color: #7f8c8d; 
+    margin-bottom: 25px; 
+    border-left: 4px solid #3498db; 
+    /* display: none dihapus karena diatur oleh x-show Alpine */
+}
+
 .btn-group { display: flex; gap: 10px; }
-button { flex: 1; padding: 12px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; }
+button { 
+    flex: 1; 
+    padding: 12px; 
+    border-radius: 10px; 
+    border: none; 
+    cursor: pointer; 
+    font-weight: bold; 
+    transition: 0.3s; 
+}
+
 .btn-next { background: #3498db; color: white; }
 .btn-struct { background: #95a5a6; color: white; }
-.btn-config { position: absolute; top: 15px; right: 15px; background: transparent; color: #95a5a6; font-size: 1.5rem; padding: 5px; width: auto; flex: none; }
 button:hover { opacity: 0.8; transform: translateY(-2px); }
 
-.config-modal {
-    display: none; /* Disembunyikan secara default */
-    position: fixed;
-    z-index: 100;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-    justify-content: center;
-    align-items: center;
-}
-
-.config-form {
-    background-color: #fefefe;
-    padding: 20px 30px;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    width: 90%;
-    max-width: 400px;
-}
-
-.config-form h3 {
-    text-align: center;
-    margin-top: 0;
-    margin-bottom: 25px;
-    color: #2c3e50;
-}
-
+/* MODAL SECTION */
 .form-group {
     margin-bottom: 15px;
     display: flex;
@@ -52,18 +91,9 @@ button:hover { opacity: 0.8; transform: translateY(-2px); }
     align-items: center;
 }
 
-.form-group label {
-    color: #34495e;
-    font-size: 0.9rem;
-}
-
 .form-group input[type="text"] {
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    width: 50%;
-}
-
-.form-group input[type="checkbox"] {
-    transform: scale(1.5);
+    width: 60%;
 }
