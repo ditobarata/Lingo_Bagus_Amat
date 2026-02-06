@@ -2,7 +2,7 @@ const { createApp, ref, reactive, onMounted } = Vue;
 
 createApp({
     setup() {
-        // State (Data Reaktif)
+        // 1. State (Data Reaktif)
         const currentKalimat = ref({});
         const showStructure = ref(false);
         const settings = reactive({
@@ -12,12 +12,12 @@ createApp({
             isBlurIndo: false
         });
 
-        // Fungsi Simpan ke LocalStorage
+        // 2. Fungsi Simpan ke LocalStorage
         const save = () => {
             localStorage.setItem('arabicSettings', JSON.stringify(settings));
         };
 
-        // Fungsi Ambil Kalimat Acak
+        // 3. Fungsi Ambil Kalimat Acak
         const tampilkanAcak = () => {
             const db = window.databaseKalimat;
             if (db && db.length > 0) {
@@ -27,26 +27,23 @@ createApp({
             }
         };
 
-        // Inisialisasi Data saat Aplikasi Dibuka
+        // 4. Inisialisasi Data
         const init = () => {
-            // Muat setelan lama jika ada
             const saved = localStorage.getItem('arabicSettings');
             if (saved) {
                 Object.assign(settings, JSON.parse(saved));
             }
 
-            // Tambahkan versi gundul ke semua data (Regex)
             if (window.databaseKalimat) {
                 window.databaseKalimat = window.databaseKalimat.map(item => ({
                     ...item,
                     gundul: item.ar.replace(/[\u064B-\u0652\u0670]/g, '')
                 }));
             }
-
             tampilkanAcak();
         };
 
-        // Fungsi Interaksi
+        // 5. Fungsi Interaksi
         const changeName = () => {
             let newName = prompt("Masukkan nama kamu:", settings.userName);
             if (newName) {
@@ -65,12 +62,16 @@ createApp({
             save();
         };
 
-        // Lifecycle Hook
+        const goToQuran = () => {
+            alert("Aplikasi Al-Qur'an sedang dalam proses pengembangan!");
+        };
+
+        // 6. Jalankan init saat mounted
         onMounted(() => {
             init();
         });
 
-        // Kembalikan data agar bisa dipakai di HTML
+        // 7. RETURN SEMUA ke HTML (Harus di paling bawah setup)
         return {
             currentKalimat,
             showStructure,
@@ -78,7 +79,8 @@ createApp({
             tampilkanAcak,
             changeName,
             toggleGundul,
-            toggleSetting
+            toggleSetting,
+            goToQuran
         };
     }
 }).mount('#app');

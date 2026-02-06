@@ -3,44 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arabic SPOK Master - Vue 3 Edition</title>
+    <title>Lingo Bagus Amat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
 <body>
     <div id="app" v-cloak>
+        <div class="kawung-bg"></div>
+
         <div class="card">
-            <p>Salam, 
-                <span class="user-name" @click="changeName">
-                    {{ settings.userName }}
-                </span>!
+            <div class="mode-switcher-simple" title="Pindah ke Al-Qur'an" @click="goToQuran">
+                <i class="fa-solid fa-book-quran"></i>
+            </div>
+
+            <p class="greeting">
+                Salam, <span class="user-name" @click="changeName">{{ settings.userName }}</span>
             </p>
 
             <div class="arabic" @click="toggleGundul">
                 {{ settings.isGundul ? currentKalimat.gundul : currentKalimat.ar }}
             </div>
 
-            <div class="latin" 
-                 :class="{ 'blur': settings.isBlurLatin }" 
-                 @click="toggleSetting('isBlurLatin')">
+            <div class="latin" :class="{ 'blur': settings.isBlurLatin }" @click="toggleSetting('isBlurLatin')">
                 {{ currentKalimat.lat }}
             </div>
 
-            <div class="indo" 
-                 :class="{ 'blur': settings.isBlurIndo }" 
-                 @click="toggleSetting('isBlurIndo')">
+            <div class="indo" :class="{ 'blur': settings.isBlurIndo }" @click="toggleSetting('isBlurIndo')">
                 {{ currentKalimat.id }}
             </div>
 
             <div class="structure-box" v-if="showStructure">
-                {{ currentKalimat.struktur }}
+                <strong>Struktur:</strong> {{ currentKalimat.struktur }}
             </div>
 
             <div class="btn-group">
                 <button class="btn-struct" @click="showStructure = !showStructure">
-                    {{ showStructure ? 'Tutup Struktur' : 'Lihat Struktur' }}
+                    {{ showStructure ? 'Tutup Struktur' : 'Bedah Struktur' }}
                 </button>
-                <button class="btn-next" @click="tampilkanAcak">Kalimat Lain →</button>
+                <button class="btn-next" @click="tampilkanAcak">Ganti Kalimat →</button>
             </div>
         </div>
     </div>
