@@ -1,5 +1,4 @@
-/* 1. Cegah kedipan Alpine (x-cloak) */
-[x-cloak] { 
+[v-cloak] { 
     display: none !important; 
 }
 

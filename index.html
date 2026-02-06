@@ -3,39 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arabic SPOK Master</title>
+    <title>Arabic SPOK Master - Vue 3 Edition</title>
     <link rel="stylesheet" href="style.css">
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 </head>
-<body x-data="lingoApp" x-cloak>
-    <div class="card">
-        <p>Salam, <span class="user-name" 
-                       @click="changeName" 
-                       x-text="settings.userName" 
-                       style="cursor:pointer; font-weight:bold; color:#3498db; text-decoration:underline;"></span>!</p>
+<body>
+    <div id="app" v-cloak>
+        <div class="card">
+            <p>Salam, 
+                <span class="user-name" @click="changeName">
+                    {{ settings.userName }}
+                </span>!
+            </p>
 
-        <div class="arabic" 
-             @click="toggleGundul" 
-             x-text="settings.isGundul ? currentKalimat.gundul : currentKalimat.ar">
-        </div>
+            <div class="arabic" @click="toggleGundul">
+                {{ settings.isGundul ? currentKalimat.gundul : currentKalimat.ar }}
+            </div>
 
-        <div class="latin" 
-             :class="{ 'blur': settings.isBlurLatin }" 
-             @click="toggleSetting('isBlurLatin')"
-             x-text="currentKalimat.lat">
-        </div>
+            <div class="latin" 
+                 :class="{ 'blur': settings.isBlurLatin }" 
+                 @click="toggleSetting('isBlurLatin')">
+                {{ currentKalimat.lat }}
+            </div>
 
-        <div class="indo" 
-             :class="{ 'blur': settings.isBlurIndo }" 
-             @click="toggleSetting('isBlurIndo')"
-             x-text="currentKalimat.id">
-        </div>
+            <div class="indo" 
+                 :class="{ 'blur': settings.isBlurIndo }" 
+                 @click="toggleSetting('isBlurIndo')">
+                {{ currentKalimat.id }}
+            </div>
 
-        <div class="structure-box" x-show="showStructure" x-text="currentKalimat.struktur"></div>
+            <div class="structure-box" v-if="showStructure">
+                {{ currentKalimat.struktur }}
+            </div>
 
-        <div class="btn-group">
-            <button class="btn-struct" @click="showStructure = !showStructure">Struktur</button>
-            <button class="btn-next" @click="tampilkanAcak">Acak Kalimat</button>
+            <div class="btn-group">
+                <button class="btn-struct" @click="showStructure = !showStructure">
+                    {{ showStructure ? 'Tutup Struktur' : 'Lihat Struktur' }}
+                </button>
+                <button class="btn-next" @click="tampilkanAcak">Kalimat Lain →</button>
+            </div>
         </div>
     </div>
 
