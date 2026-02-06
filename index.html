@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lingo Bagus Amat</title>
+    <title>Arabic Master SPA - Njawani</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -15,40 +15,78 @@
 
         <div class="card">
             <nav class="app-nav">
-                <a href="index.html" class="nav-item active">SPOK</a>
-                <a href="quran.html" class="nav-item">Al-Qur'an</a>
+                <div class="nav-item" :class="{active: currentMode === 'lingo'}" @click="currentMode = 'lingo'">Bhs Arab</div>
+                <div class="nav-item" :class="{active: currentMode === 'quran'}" @click="currentMode = 'quran'">Al-Qur'an</div>
             </nav>
 
-            <p class="greeting">
-                Salam, <span class="user-name" @click="changeName">{{ settings.userName }}</span>
-            </p>
-
-            <div class="arabic" @click="toggleGundul">
-                {{ settings.isGundul ? currentKalimat.gundul : currentKalimat.ar }}
+            <div class="user-profile">
+                <p class="greeting">
+                    Salam, <span class="user-name" @click="changeName">{{ settings.userName }}</span>
+                    <i class="fa-solid fa-pen-to-square edit-icon"></i>
+                </p>
             </div>
 
-            <div class="latin" :class="{ 'blur': settings.isBlurLatin }" @click="toggleSetting('isBlurLatin')">
-                {{ currentKalimat.lat }}
+            <hr class="sogan-divider">
+
+            <div v-if="currentMode === 'lingo'" class="mode-container">
+                <div class="arabic" @click="toggleGundul">
+                    {{ settings.isGundul ? currentKalimat.gundul : currentKalimat.ar }}
+                </div>
+                <div class="latin" :class="{ 'blur': settings.isBlurLatin }" @click="toggleSetting('isBlurLatin')">
+                    {{ currentKalimat.lat }}
+                </div>
+                <div class="indo" :class="{ 'blur': settings.isBlurIndo }" @click="toggleSetting('isBlurIndo')">
+                    {{ currentKalimat.id }}
+                </div>
+                <div class="structure-box" v-if="showStructure">
+                    <strong>Struktur:</strong> {{ currentKalimat.struktur }}
+                </div>
+                <div class="btn-group">
+                    <button class="btn-struct" @click="showStructure = !showStructure">
+                        {{ showStructure ? 'Tutup Struktur' : 'Bedah Struktur' }}
+                    </button>
+                    <button class="btn-next" @click="tampilkanAcak">Ganti Kalimat →</button>
+                </div>
             </div>
 
-            <div class="indo" :class="{ 'blur': settings.isBlurIndo }" @click="toggleSetting('isBlurIndo')">
-                {{ currentKalimat.id }}
-            </div>
+            <div v-if="currentMode === 'quran'" class="mode-container">
+                <div class="quran-header" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                    <button v-if="selectedSurah" @click="selectedSurah = null" class="btn-back-mini">
+                        <i class="fa-solid fa-chevron-left"></i> Pilih Surah
+                    </button>
+                    <h3 style="color: var(--sogan-dark); margin: 0;">
+                        {{ selectedSurah ? selectedSurah.namaLatin : 'Al-Qur\'anul Karim' }}
+                    </h3>
+                </div>
 
-            <div class="structure-box" v-if="showStructure">
-                <strong>Struktur:</strong> {{ currentKalimat.struktur }}
-            </div>
+                <div v-if="loading" class="loading-text">Mendhak data...</div>
 
-            <div class="btn-group">
-                <button class="btn-struct" @click="showStructure = !showStructure">
-                    {{ showStructure ? 'Tutup Struktur' : 'Bedah Struktur' }}
-                </button>
-                <button class="btn-next" @click="tampilkanAcak">Ganti Kalimat →</button>
+                <div v-else class="scroll-container">
+                    <div v-if="!selectedSurah" class="surah-list">
+                        <div v-for="surah in daftarSurah" :key="surah.nomor" 
+                            @click="fetchAyat(surah.nomor)" class="surah-item">
+                            <div class="surah-info">
+                                <span class="nomor-bulat">{{ surah.nomor }}</span>
+                                <span>{{ surah.namaLatin }}</span>
+                            </div>
+                            <span class="arabic-small">{{ surah.nama }}</span>
+                        </div>
+                    </div>
+
+                    <div v-else class="ayat-list">
+                        <div v-for="ayat in daftarAyat" :key="ayat.nomorAyat" class="ayat-item">
+                            <div class="ayat-top">
+                                <span class="ayat-nomor">{{ selectedSurah.nomor }}:{{ ayat.nomorAyat }}</span>
+                                <p class="arabic-ayat">{{ ayat.teksArab }}</p>
+                            </div>
+                            <p class="indo-ayat">{{ ayat.teksIndonesia }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script src="data.js"></script>
-    <script src="lingo.js"></script>
-</body>
+    <script src="app.js"></script> </body>
 </html>
