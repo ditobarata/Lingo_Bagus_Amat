@@ -8,6 +8,54 @@
 
 [v-cloak] { display: none !important; }
 
+/* Navigasi di dalam Card */
+.app-nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--sogan-light);
+    padding-bottom: 10px;
+}
+
+.nav-item {
+    text-decoration: none;
+    color: var(--sogan-mid);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    padding: 5px 10px;
+}
+
+.nav-item.active {
+    color: var(--sogan-dark);
+    border-bottom: 2px solid var(--sogan-dark);
+}
+
+.nav-item:hover {
+    color: var(--sogan-dark);
+}
+
+/* User Profile Section */
+.user-profile {
+    margin-bottom: 15px;
+}
+
+.edit-icon {
+    font-size: 0.7rem;
+    margin-left: 5px;
+    opacity: 0.5;
+}
+
+.sogan-divider {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, transparent, var(--sogan-light), transparent);
+    margin-bottom: 25px;
+}
+
 body {
     background-color: var(--gading);
     margin: 0;

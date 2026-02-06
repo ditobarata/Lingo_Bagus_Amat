@@ -63,7 +63,7 @@ createApp({
         };
 
         const goToQuran = () => {
-            alert("Aplikasi Al-Qur'an sedang dalam proses pengembangan!");
+            window.location.href = 'quran.html';
         };
 
         // 6. Jalankan init saat mounted

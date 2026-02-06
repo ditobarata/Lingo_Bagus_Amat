@@ -14,9 +14,10 @@
         <div class="kawung-bg"></div>
 
         <div class="card">
-            <div class="mode-switcher-simple" title="Pindah ke Al-Qur'an" @click="goToQuran">
-                <i class="fa-solid fa-book-quran"></i>
-            </div>
+            <nav class="app-nav">
+                <a href="index.html" class="nav-item active">SPOK</a>
+                <a href="quran.html" class="nav-item">Al-Qur'an</a>
+            </nav>
 
             <p class="greeting">
                 Salam, <span class="user-name" @click="changeName">{{ settings.userName }}</span>
