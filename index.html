@@ -13,6 +13,26 @@
     <div id="app" v-cloak>
         <div class="kawung-bg"></div>
 
+        <div v-if="showSplash" class="splash-overlay">
+            <div class="splash-card">
+                <h2>Selamat Datang di Mode Al-Qur'an</h2>
+                <p>
+                    Aplikasi ini menggunakan <strong>Quran.com API v4</strong> sebagai sumber data ayat,
+                    tajwid, transliterasi, dan terjemahan. API ini dipakai secara luas di ekosistem digital
+                    Al-Qur'an dan dikelola secara profesional sehingga dapat dipertanggungjawabkan sebagai
+                    rujukan teknis penyajian data.
+                </p>
+                <p>
+                    Aplikasi <strong>tidak mengubah isi surat</strong>. Teks Al-Qur'an ditampilkan apa adanya dari API;
+                    aplikasi hanya mengatur pilihan font dan pewarnaan tajwid sesuai penandaan yang diberikan API.
+                </p>
+                <p class="splash-doa">
+                    Selamat membaca Al-Qur'an. Semoga Allah memudahkan langkah Anda untuk segera khatam.
+                </p>
+                <button class="btn-splash" @click="tutupSplash">Mulai Membaca</button>
+            </div>
+        </div>
+
         <div class="card">
             <nav class="app-nav">
                 <div class="nav-item" :class="{active: currentMode === 'lingo'}" @click="currentMode = 'lingo'">Bhs Arab</div>
@@ -50,38 +70,57 @@
             </div>
 
             <div v-if="currentMode === 'quran'" class="mode-container">
-                <div class="quran-header" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                    <button v-if="selectedSurah" @click="selectedSurah = null" class="btn-back-mini">
-                        <i class="fa-solid fa-chevron-left"></i> Pilih Surah
-                    </button>
+                <div class="quran-header" style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
                     <h3 style="color: var(--sogan-dark); margin: 0;">
-                        {{ selectedSurah ? selectedSurah.namaLatin : 'Al-Qur\'anul Karim' }}
+                        {{ activeSurahTitle }}
                     </h3>
                 </div>
+                <div v-if="activeAyatInfo" class="last-read-indicator">
+                    Posisi baca: {{ activeAyatInfo.chapterNumber }}:{{ activeAyatInfo.nomorAyat }}
+                    • Ayat global: {{ activeAyatInfo.globalAyat }}
+                    • Rentang dimuat: {{ quranWindowStart }}-{{ quranWindowEnd }}
+                </div>
 
-                <div v-if="loading" class="loading-text">Mendhak data...</div>
-
-                <div v-else class="scroll-container">
-                    <div v-if="!selectedSurah" class="surah-list">
-                        <div v-for="surah in daftarSurah" :key="surah.nomor" 
-                            @click="fetchAyat(surah.nomor)" class="surah-item">
-                            <div class="surah-info">
-                                <span class="nomor-bulat">{{ surah.nomor }}</span>
-                                <span>{{ surah.namaLatin }}</span>
-                            </div>
-                            <span class="arabic-small">{{ surah.nama }}</span>
+                <div v-if="loading" class="loading-text">
+                    {{ syncStatus || 'Mendhak data...' }}
+                    <div v-if="isSyncing" class="sync-progress-wrap">
+                        <div class="sync-progress-meta">
+                            <span>{{ syncCurrent }}/{{ syncTotal }} surah</span>
+                            <strong>{{ syncPercent }}%</strong>
+                        </div>
+                        <div class="sync-progress-track">
+                            <div class="sync-progress-fill" :style="{ width: syncPercent + '%' }"></div>
                         </div>
                     </div>
+                </div>
 
-                    <div v-else class="ayat-list">
-                        <div v-for="ayat in daftarAyat" :key="ayat.nomorAyat" class="ayat-item">
-                            <div class="ayat-top">
-                                <span class="ayat-nomor">{{ selectedSurah.nomor }}:{{ ayat.nomorAyat }}</span>
-                                <p class="arabic-ayat">{{ ayat.teksArab }}</p>
+                <div v-else class="scroll-container" ref="ayatScrollContainer" @scroll.passive="onAyatScroll">
+                    <div class="ayat-list">
+                        <div
+                            v-for="(ayat, index) in daftarAyat"
+                            :key="ayat.globalAyat"
+                            class="ayat-item"
+                            :class="{ 'is-active-ayat': activeAyatGlobal === ayat.globalAyat }"
+                            :data-global="ayat.globalAyat"
+                        >
+                            <div
+                                v-if="index === 0 || daftarAyat[index - 1].chapterNumber !== ayat.chapterNumber"
+                                class="surah-change-marker"
+                            >
+                                <span class="surah-change-latin">{{ getSurahLatinName(ayat.chapterNumber) }}</span>
+                                <span class="surah-change-arabic">{{ getSurahArabicName(ayat.chapterNumber) }}</span>
                             </div>
+                            <div class="ayat-top">
+                                <span class="ayat-nomor">{{ ayat.chapterNumber }}:{{ ayat.nomorAyat }}</span>
+                                <p class="arabic-ayat" v-html="ayat.teksArab"></p>
+                            </div>
+                            <p class="latin-ayat">{{ ayat.teksLatin }}</p>
                             <p class="indo-ayat">{{ ayat.teksIndonesia }}</p>
                         </div>
                     </div>
+                </div>
+                <div v-if="isWindowRefreshing" class="loading-text window-refreshing-text">
+                    Menyesuaikan jendela ayat...
                 </div>
             </div>
         </div>
